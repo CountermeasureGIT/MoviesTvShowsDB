@@ -35,7 +35,6 @@ class MainViewModel(
                 e.printStackTrace()
             }
 
-
             if (moviesResponse != null && moviesResponse.isSuccessful && moviesResponse.body() != null) {
                 val results = moviesResponse.body()!!
                 topRatedMovies.postValue(results.results)
