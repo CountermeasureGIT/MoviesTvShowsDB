@@ -51,9 +51,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0'
 
-    //implementation 'androidx.room:room-runtime:2.1.0'
-    //implementation "androidx.room:room-ktx:2.1.0"
-    //kapt 'androidx.room:room-compiler:2.1.0'
+    implementation 'androidx.room:room-runtime:2.1.0'
+    implementation "androidx.room:room-ktx:2.1.0"
+    kapt 'androidx.room:room-compiler:2.1.0'
 
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.4.0'
     implementation 'org.kodein.di:kodein-di-framework-android-x:6.4.0'

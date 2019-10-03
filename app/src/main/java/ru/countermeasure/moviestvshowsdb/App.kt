@@ -8,6 +8,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import ru.countermeasure.moviestvshowsdb.di.module.appModule
 import ru.countermeasure.moviestvshowsdb.di.module.networkModule
+import ru.countermeasure.moviestvshowsdb.di.module.repositoryModule
 import ru.countermeasure.moviestvshowsdb.di.module.viewModelModule
 
 class App : Application(), KodeinAware {
@@ -18,5 +19,6 @@ class App : Application(), KodeinAware {
         //import(dbModule)
         import(networkModule)
         import(viewModelModule)
+        import(repositoryModule)
     }
 }
