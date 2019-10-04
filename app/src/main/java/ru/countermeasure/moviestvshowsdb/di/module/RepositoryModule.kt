@@ -7,7 +7,7 @@ import org.kodein.di.generic.singleton
 import ru.countermeasure.moviestvshowsdb.repository.MovieDiscoverRepository
 
 val repositoryModule = Kodein.Module(name = "repositoryModule") {
-    bind<MovieDiscoverRepository>() with singleton { MovieDiscoverRepository(instance()) }
+    bind<MovieDiscoverRepository>() with singleton { MovieDiscoverRepository(instance(), instance()) }
     //bind<Router>() with singleton { Router(instance()) }
     //bind<SessionManager>() with singleton { SessionManager(instance()) }
 }

@@ -7,14 +7,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.movie_item.view.*
 import ru.countermeasure.moviestvshowsdb.R
-import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.MovieDiscoverResult
+import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 
 class MoviesAdapter(
-    private var movies: List<MovieDiscoverResult>
+    private var movies: List<Movie>
 ) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
-    fun setMovies(newMovies: List<MovieDiscoverResult>) {
-        movies = newMovies
+    fun setMovies(newMovies: List<Movie>?) {
+        movies = newMovies ?: emptyList()
         notifyDataSetChanged()
     }
 

@@ -13,18 +13,23 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.countermeasure.moviestvshowsdb.BuildConfig
 import ru.countermeasure.moviestvshowsdb.model.network.IMovieDiscover
+import ru.countermeasure.moviestvshowsdb.util.temp.MyCallAdapterFactory
 
 val networkModule = Kodein.Module(name = "networkModule") {
     constant("baseUrl") with BuildConfig.BASE_API_URL
 
     bind<Gson>() with singleton {
-        GsonBuilder().create()
+        Gson()
     }
 
     bind<OkHttpClient>() with singleton {
         OkHttpClient.Builder()
             .addInterceptor(instance())
             .build()
+    }
+
+    bind<MyCallAdapterFactory>() with singleton {
+        MyCallAdapterFactory()
     }
 
     bind<Interceptor>() with singleton {
@@ -45,6 +50,7 @@ val networkModule = Kodein.Module(name = "networkModule") {
         Retrofit.Builder()
             .baseUrl(instance<String>("baseUrl"))
             .addConverterFactory(GsonConverterFactory.create(instance()))
+            .addCallAdapterFactory(instance())
             .client(instance())
             .build()
     }

@@ -1,46 +1,28 @@
 package ru.countermeasure.moviestvshowsdb.ui.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import retrofit2.Response
-import ru.countermeasure.moviestvshowsdb.model.network.IMovieDiscover
-import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.MovieDiscoverResponse
-import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.MovieDiscoverResult
+import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
+import ru.countermeasure.moviestvshowsdb.repository.MovieDiscoverRepository
+import ru.countermeasure.moviestvshowsdb.util.Resource
 
 class MainViewModel(
-    private val iMovieDiscover: IMovieDiscover
+    //private val iMovieDiscover: IMovieDiscover
+    private val movieDiscoverRepository: MovieDiscoverRepository
 ) : ViewModel() {
 
-    private val topRatedMovies: MutableLiveData<List<MovieDiscoverResult>> by lazy {
-        MutableLiveData<List<MovieDiscoverResult>>()
+    val topRatedMovies: LiveData<Resource<List<Movie>>> = liveData {
+        emitSource(movieDiscoverRepository.getTopRatedMovies())
     }
 
-    init {
-        loadTopRatedMovie()
-    }
-
-    fun getTopRatedMovies(): LiveData<List<MovieDiscoverResult>> {
-        return topRatedMovies
-    }
-
-    private fun loadTopRatedMovie() {
-        viewModelScope.launch {
-            var moviesResponse: Response<MovieDiscoverResponse>? = null
-            try {
-                moviesResponse = iMovieDiscover.getTopRatedMovies(1)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            if (moviesResponse != null && moviesResponse.isSuccessful && moviesResponse.body() != null) {
-                val results = moviesResponse.body()!!
-                topRatedMovies.postValue(results.results)
-            }
-
+    private fun loadTopRatedMovies() {
+        val scope = viewModelScope.launch {
+            movieDiscoverRepository.getTopRatedMovies()
         }
+    }
+
+    fun updateMoviesClicked() {
+        loadTopRatedMovies()
     }
 
 }
