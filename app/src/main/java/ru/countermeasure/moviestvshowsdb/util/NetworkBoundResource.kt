@@ -1,12 +1,10 @@
 package ru.countermeasure.moviestvshowsdb.util
 
 import android.util.Log
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
-import ru.countermeasure.moviestvshowsdb.util.temp.ApiResponse
 import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
@@ -23,69 +21,56 @@ abstract class NetworkBoundResource<ResultType, RequestType>(
 
         launch {
             val dbSource = loadFromDb()
-            result.addSource(dbSource) {
-                result.removeSource(dbSource)
-                fetchFromNetwork(dbSource)
+            withContext(Dispatchers.Main) {
+                result.addSource(dbSource) {
+                    result.removeSource(dbSource)
+                    fetchFromNetwork(this@launch, dbSource)
+                }
             }
         }
     }
 
-    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
-        launch {
-            val apiResponse = createCall()
-            println("test")
+    private fun fetchFromNetwork(scope: CoroutineScope, dbSource: LiveData<ResultType>) {
+        val apiResponse = createCall()
+        println("test")
 
-            withContext(Dispatchers.Main) {
-                result.addSource(dbSource) { newData ->
-                    setValue(this, Resource.loading(newData))
-                }
-            }
+        result.addSource(dbSource) { newData ->
+            setValue(scope, Resource.loading(newData))
+        }
 
-            when (apiResponse) {
-                is ApiResponse.Success -> {
-                    saveCallResult(processResponse(apiResponse))
-                    withContext(Dispatchers.Main) {
-                        result.removeSource(dbSource)
-                        result.addSource(loadFromDb()) { newData ->
-                            setValue(this, Resource.success(newData))
-                        }
+        result.addSource(apiResponse) { response ->
+            result.removeSource(apiResponse)
+            result.removeSource(dbSource)
+
+            when (response) {
+                is ApiSuccessResponse -> {
+                    launch {
+                        saveCallResult(processResponse(response))
                     }
-//                    replaceSource(dbSource, dbSource, Observer {
-//                        result.value = Resource.success(it)
-//                    })
+                    result.addSource(loadFromDb()) { newData ->
+                        setValue(scope, Resource.success(newData))
+                    }
+
                     Log.d(
                         "MY_LOG_TAG " + this.javaClass.simpleName,
-                        "ApiResponse " + (apiResponse.data)
+                        "ApiResponse " + (response.body)
                     )
                 }
-                is ApiResponse.Failure -> {
-                    onFetchFailed()
-                    withContext(Dispatchers.Main) {
-                        result.removeSource(dbSource)
-                        result.addSource(dbSource) { newData ->
-                            setValue(this, Resource.error(apiResponse.message ?: "", newData))
-                        }
+                is ApiEmptyResponse -> {
+                    result.addSource(loadFromDb()) { newData ->
+                        setValue(scope, Resource.success(newData))
                     }
-//                    replaceSource(dbSource, dbSource, Observer {
-//                        result.value = Resource.error(apiResponse.message ?: "Error", it)
-//                    })
+                    Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "ApiEmptyResponse")
+                }
+                is ApiErrorResponse -> {
+                    onFetchFailed()
+                    result.addSource(dbSource) { newData ->
+                        setValue(scope, Resource.error(response.errorMessage, newData))
+                    }
                     Log.d(
                         "MY_LOG_TAG " + this.javaClass.simpleName,
-                        "ApiResponse error " + (apiResponse.message)
+                        "ApiResponse error " + (response.errorMessage)
                     )
-                }
-                is ApiResponse.NetworkError -> {
-                    onFetchFailed()
-                    withContext(Dispatchers.Main) {
-                        result.removeSource(dbSource)
-                        result.addSource(dbSource) { newData ->
-                            setValue(this, Resource.error("Network Error", newData))
-                        }
-                    }
-//                    replaceSource(dbSource, dbSource, Observer {
-//                        result.value = Resource.error("Network error", it)
-//                    })
-                    Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "ApiResponse network error")
                 }
             }
         }
@@ -119,11 +104,11 @@ abstract class NetworkBoundResource<ResultType, RequestType>(
         Log.d("MY_LOG_TAG" + this.javaClass.simpleName, "Network error")
     }
 
-    protected open fun processResponse(response: ApiResponse.Success<RequestType>) = response.data
+    protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body
 
-    protected abstract suspend fun saveCallResult(item: RequestType)
+    protected abstract fun saveCallResult(item: RequestType)
 
-    protected abstract suspend fun loadFromDb(): LiveData<ResultType>
+    protected abstract fun loadFromDb(): LiveData<ResultType>
 
-    protected abstract suspend fun createCall(): ApiResponse<RequestType>
+    protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
 }

@@ -10,7 +10,7 @@ import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 @Dao
 interface TopRatedMoviesDao {
     @Insert(onConflict = REPLACE)
-    suspend fun saveMovies(movies: List<Movie>)
+    fun saveMovies(movies: List<Movie>)
 
     @Query("SELECT * FROM movies")
     fun getMovies() : LiveData<List<Movie>>

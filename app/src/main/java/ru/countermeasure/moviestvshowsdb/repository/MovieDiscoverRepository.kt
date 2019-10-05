@@ -8,8 +8,8 @@ import ru.countermeasure.moviestvshowsdb.model.db.dao.TopRatedMoviesDao
 import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 import ru.countermeasure.moviestvshowsdb.model.network.IMovieDiscover
 import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.MovieDiscoverResponse
+import ru.countermeasure.moviestvshowsdb.util.ApiResponse
 import ru.countermeasure.moviestvshowsdb.util.NetworkBoundResource
-import ru.countermeasure.moviestvshowsdb.util.temp.ApiResponse
 
 class MovieDiscoverRepository(
     private val iMovieDiscover: IMovieDiscover,
@@ -22,7 +22,7 @@ class MovieDiscoverRepository(
         NetworkBoundResource<List<Movie>, MovieDiscoverResponse>(
             coroutineContext
         ) {
-        override suspend fun saveCallResult(item: MovieDiscoverResponse) {
+        override fun saveCallResult(item: MovieDiscoverResponse) {
             val results = item.results
             val movies = results.map {
                 Movie(
@@ -35,11 +35,11 @@ class MovieDiscoverRepository(
             topRatedMoviesDao.saveMovies(movies)
         }
 
-        override suspend fun loadFromDb(): LiveData<List<Movie>> {
+        override fun loadFromDb(): LiveData<List<Movie>> {
             return topRatedMoviesDao.getMovies()
         }
 
-        override suspend fun createCall(): ApiResponse<MovieDiscoverResponse> {
+        override fun createCall(): LiveData<ApiResponse<MovieDiscoverResponse>> {
             return iMovieDiscover.getTopRatedMovies(1)
         }
     }.asLiveData()
