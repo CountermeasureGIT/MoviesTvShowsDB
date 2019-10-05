@@ -3,6 +3,7 @@ package ru.countermeasure.moviestvshowsdb.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +15,7 @@ import org.kodein.di.android.closestKodein
 import ru.countermeasure.moviestvshowsdb.R
 import ru.countermeasure.moviestvshowsdb.di.provideViewModel
 import ru.countermeasure.moviestvshowsdb.ui.viewmodels.MainViewModel
-import ru.countermeasure.moviestvshowsdb.util.Status
+import ru.countermeasure.moviestvshowsdb.util.Result
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 
@@ -41,26 +42,27 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         }
 
         floatingActionButton.setOnClickListener {
-            viewModel.updateMoviesClicked()
+            viewModel.onRefreshAction()
         }
     }
 
     private fun observeViewModelData() {
-        viewModel.topRatedMovies.observe(this) {
+        viewModel.getTopRatedMovies().observe(this) {
             viewAdapter.setMovies(it.data)
             when(it.status) {
-                Status.LOADING -> {
-                    Toast.makeText(this, "Loading", Toast.LENGTH_SHORT).show()
+                Result.Status.LOADING -> {
+                    progressBar.visibility = View.VISIBLE
                     Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "Loading")
                     textView.text = textView.text.toString() + "\nLoading"
                 }
-                Status.ERROR -> {
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                Result.Status.ERROR -> {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "Error")
                     textView.text = textView.text.toString() + "\nError"
                 }
-                Status.SUCCESS -> {
-                    Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                Result.Status.SUCCESS -> {
+                    progressBar.visibility = View.GONE
                     Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "Success")
                     textView.text = textView.text.toString() + "\nSuccess"
                 }

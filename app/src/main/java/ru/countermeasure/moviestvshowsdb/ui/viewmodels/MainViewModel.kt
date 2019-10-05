@@ -1,28 +1,32 @@
 package ru.countermeasure.moviestvshowsdb.ui.viewmodels
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
 import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 import ru.countermeasure.moviestvshowsdb.repository.MovieDiscoverRepository
-import ru.countermeasure.moviestvshowsdb.util.Resource
+import ru.countermeasure.moviestvshowsdb.util.Result
 
 class MainViewModel(
-    //private val iMovieDiscover: IMovieDiscover
     private val movieDiscoverRepository: MovieDiscoverRepository
 ) : ViewModel() {
 
-    val topRatedMovies: LiveData<Resource<List<Movie>>> = liveData {
-        emitSource(movieDiscoverRepository.getTopRatedMovies())
-    }
-
-    private fun loadTopRatedMovies() {
-        val scope = viewModelScope.launch {
+    private val reloadTrigger = MutableLiveData<Boolean>()
+    private val topRatedMovies: LiveData<Result<List<Movie>>> =
+        Transformations.switchMap(reloadTrigger) {
             movieDiscoverRepository.getTopRatedMovies()
         }
+
+    init {
+        refreshTopRatedMovies()
     }
 
-    fun updateMoviesClicked() {
-        loadTopRatedMovies()
+    private fun refreshTopRatedMovies() {
+        reloadTrigger.value = true
     }
+
+    fun onRefreshAction() {
+        refreshTopRatedMovies()
+    }
+
+    fun getTopRatedMovies(): LiveData<Result<List<Movie>>> = topRatedMovies
 
 }

@@ -9,6 +9,4 @@ import org.kodein.di.generic.singleton
 
 val appModule = Kodein.Module(name = "appModule") {
     bind<SharedPreferences>() with singleton { instance<Context>().getSharedPreferences("MoviesTvShowsDB_SP", Context.MODE_PRIVATE) }
-    //bind<Router>() with singleton { Router(instance()) }
-    //bind<SessionManager>() with singleton { SessionManager(instance()) }
 }

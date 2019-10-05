@@ -1,37 +1,6 @@
 package ru.countermeasure.moviestvshowsdb.util
 
-import android.util.Log
 import retrofit2.Response
-import java.util.regex.Pattern
-
-//sealed class ApiResponse<T> {
-//    companion object {
-//        fun <T> create(error: Throwable): ApiErrorResponse<T> =
-//            ApiErrorResponse(error)
-//
-//        fun <T> create(response: Response<T>): ApiResponse<T> =
-//            if (response.isSuccessful) {
-//                response.body()?.let {
-//                    ApiSuccessResponse(it)
-//                } ?: ApiEmptyResponse()
-//            } else {
-//                val msg = response.errorBody()?.string()
-//                ApiErrorResponse(
-//                    ServerError(
-//                        response.code(),
-//                        msg
-//                    )
-//                )
-//            }
-//    }
-//}
-//
-//data class ApiErrorResponse<T>(val error: Throwable) : ApiResponse<T>()
-//
-//data class ApiSuccessResponse<T>(val body: T) : ApiResponse<T>()
-//
-//class ApiEmptyResponse<T> : ApiResponse<T>()
-
 
 sealed class ApiResponse<T> {
     companion object {
@@ -62,9 +31,6 @@ sealed class ApiResponse<T> {
     }
 }
 
-/**
- * separate class for HTTP 204 responses so that we can make ApiSuccessResponse's body non-null.
- */
 class ApiEmptyResponse<T> : ApiResponse<T>()
 
 data class ApiSuccessResponse<T>(

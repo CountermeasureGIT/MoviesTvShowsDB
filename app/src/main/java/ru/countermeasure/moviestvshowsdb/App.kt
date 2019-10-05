@@ -17,5 +17,6 @@ class App : Application(), KodeinAware {
         import(networkModule)
         import(viewModelModule)
         import(repositoryModule)
+        import(dataSourceModule)
     }
 }
