@@ -11,19 +11,19 @@ fun <ResultType, RequestType> resultLiveData(
     saveCallResult: suspend (RequestType) -> Unit
 ): LiveData<Result<ResultType>> =
     liveData(Dispatchers.IO) {
-        emit(Result.loading(null))
+        emit(Result.loading())
 
-        val dbSource: LiveData<Result<ResultType>> = databaseQuery.invoke().map {
-            Result.success(it)
-        }
+        val invokeResult: LiveData<ResultType> = databaseQuery.invoke()
+        val dbSuccessResult: LiveData<Result<ResultType>> = invokeResult.map { Result.success(it) }
 
-        emitSource(dbSource)
+        emitSource(dbSuccessResult)
 
         val response = networkCall.invoke()
-        if (response.status == Result.Status.SUCCESS) {
+        if (response is Result.success) {
             saveCallResult(response.data!!)
-        } else if (response.status == Result.Status.ERROR) {
-            emit(Result.error(response.message!!))
-            emitSource(dbSource)
+        } else if (response is Result.error) {
+            emitSource(invokeResult.map {
+                Result.error(response.message, it)
+            })
         }
     }

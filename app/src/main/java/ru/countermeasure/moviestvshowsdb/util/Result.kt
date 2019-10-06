@@ -1,24 +1,30 @@
 package ru.countermeasure.moviestvshowsdb.util
 
-data class Result<out T>(val status: Status, val data: T?, val message: String?) {
+//cachedData class Result<out T>(val status: Status, val cachedData: T?, val message: String?) {
+//
+//    enum class Status {
+//        SUCCESS,
+//        ERROR,
+//        LOADING
+//    }
+//
+//    companion object {
+//        fun <T> success(cachedData: T): Result<T> {
+//            return Result(Status.SUCCESS, cachedData, null)
+//        }
+//
+//        fun <T> error(message: String, cachedData: T? = null): Result<T> {
+//            return Result(Status.ERROR, cachedData, message)
+//        }
+//
+//        fun <T> loading(cachedData: T? = null): Result<T> {
+//            return Result(Status.LOADING, cachedData, null)
+//        }
+//    }
+//}
 
-    enum class Status {
-        SUCCESS,
-        ERROR,
-        LOADING
-    }
-
-    companion object {
-        fun <T> success(data: T): Result<T> {
-            return Result(Status.SUCCESS, data, null)
-        }
-
-        fun <T> error(message: String, data: T? = null): Result<T> {
-            return Result(Status.ERROR, data, message)
-        }
-
-        fun <T> loading(data: T? = null): Result<T> {
-            return Result(Status.LOADING, data, null)
-        }
-    }
+sealed class Result<out T> {
+    data class error<T>(val message: String, val cachedData: T? = null) : Result<T>()
+    data class loading<T>(val data: T? = null) : Result<T>()
+    data class success<T>(val data: T) : Result<T>()
 }

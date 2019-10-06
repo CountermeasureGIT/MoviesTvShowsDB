@@ -2,6 +2,7 @@ package ru.countermeasure.moviestvshowsdb.model.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.countermeasure.moviestvshowsdb.BuildConfig
 
 @Entity(tableName = "movies")
 data class Movie(
@@ -20,4 +21,14 @@ data class Movie(
     val vote_average: Double,
     val overview: String,
     val release_date: String
-)
+) {
+    fun getPosterPathUrl(): String? {
+        var url: String? = null
+        if (!poster_path.isNullOrBlank()) {
+            url =
+                "${BuildConfig.BASE_IMAGE_API_URL}/w185/$poster_path" +
+                        "?${BuildConfig.API_KEY_QUERY_NAME}=${BuildConfig.API_KEY}"
+        }
+        return url
+    }
+}

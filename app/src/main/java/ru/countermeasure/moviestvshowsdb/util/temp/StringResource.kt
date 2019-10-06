@@ -1,8 +1,0 @@
-package ru.countermeasure.moviestvshowsdb.util.temp
-
-import android.content.Context
-import androidx.annotation.StringRes
-
-class StringResource(private val context: Context) {
-    fun getString(@StringRes stringRes: Int) = context.getString(stringRes)
-}

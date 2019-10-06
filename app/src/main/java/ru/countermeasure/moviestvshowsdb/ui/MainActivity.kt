@@ -13,7 +13,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import ru.countermeasure.moviestvshowsdb.R
-import ru.countermeasure.moviestvshowsdb.di.provideViewModel
+import ru.countermeasure.moviestvshowsdb.extension.provideViewModel
 import ru.countermeasure.moviestvshowsdb.ui.viewmodels.MainViewModel
 import ru.countermeasure.moviestvshowsdb.util.Result
 
@@ -48,23 +48,22 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
     private fun observeViewModelData() {
         viewModel.getTopRatedMovies().observe(this) {
-            viewAdapter.setMovies(it.data)
-            when(it.status) {
-                Result.Status.LOADING -> {
+            when(it) {
+                is Result.loading -> {
+                    viewAdapter.setMovies(it.data)
                     progressBar.visibility = View.VISIBLE
                     Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "Loading")
-                    textView.text = textView.text.toString() + "\nLoading"
                 }
-                Result.Status.ERROR -> {
+                is Result.error -> {
                     progressBar.visibility = View.GONE
+                    viewAdapter.setMovies(it.cachedData)
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "Error")
-                    textView.text = textView.text.toString() + "\nError"
                 }
-                Result.Status.SUCCESS -> {
+                is Result.success -> {
                     progressBar.visibility = View.GONE
+                    viewAdapter.setMovies(it.data)
                     Log.d("MY_LOG_TAG " + this.javaClass.simpleName, "Success")
-                    textView.text = textView.text.toString() + "\nSuccess"
                 }
             }
         }

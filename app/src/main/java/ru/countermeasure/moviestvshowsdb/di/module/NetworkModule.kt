@@ -11,7 +11,7 @@ import org.kodein.di.generic.with
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.countermeasure.moviestvshowsdb.BuildConfig
-import ru.countermeasure.moviestvshowsdb.model.network.MoviesDBApi
+import ru.countermeasure.moviestvshowsdb.model.network.MoviesService
 import ru.countermeasure.moviestvshowsdb.util.temp.LiveDataCallAdapterFactory
 
 val networkModule = Kodein.Module(name = "networkModule") {
@@ -36,7 +36,7 @@ val networkModule = Kodein.Module(name = "networkModule") {
             val original = it.request()
             val originalHttpUrl = original.url()
             val url = originalHttpUrl.newBuilder()
-                .addQueryParameter("api_key", "1a680bee1c010ab832b442cf27840c79")
+                .addQueryParameter(BuildConfig.API_KEY_QUERY_NAME, BuildConfig.API_KEY)
                 .build()
             val requestBuilder = original.newBuilder()
                 .url(url)
@@ -54,7 +54,7 @@ val networkModule = Kodein.Module(name = "networkModule") {
             .build()
     }
 
-    bind<MoviesDBApi>() with singleton {
-        instance<Retrofit>().create(MoviesDBApi::class.java)
+    bind<MoviesService>() with singleton {
+        instance<Retrofit>().create(MoviesService::class.java)
     }
 }

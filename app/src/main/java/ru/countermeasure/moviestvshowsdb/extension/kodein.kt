@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.di
+package ru.countermeasure.moviestvshowsdb.extension
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

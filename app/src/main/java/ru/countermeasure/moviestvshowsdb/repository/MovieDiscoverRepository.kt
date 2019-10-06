@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import ru.countermeasure.moviestvshowsdb.model.db.dao.TopRatedMoviesDao
 import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.toMovie
-import ru.countermeasure.moviestvshowsdb.util.MoviesRemoteDataSource
+import ru.countermeasure.moviestvshowsdb.model.network.MoviesRemoteDataSource
 import ru.countermeasure.moviestvshowsdb.util.resultLiveData
 
 class MovieDiscoverRepository(

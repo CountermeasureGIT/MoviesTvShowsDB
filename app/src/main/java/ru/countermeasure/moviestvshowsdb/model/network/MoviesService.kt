@@ -6,7 +6,7 @@ import retrofit2.http.Query
 import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.MovieDiscoverResult
 import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.ResponseDto
 
-interface MoviesDBApi {
+interface MoviesService {
 
     @GET("discover/movie")
     suspend fun getTopRatedMovies(

@@ -8,6 +8,8 @@ android {
     defaultConfig {
         buildConfigField 'String', 'BASE_API_URL', "\"https://api.themoviedb.org/3/\""
         buildConfigField 'String', 'BASE_IMAGE_API_URL', "\"http://image.tmdb.org/t/p/\""
+        buildConfigField 'String', 'API_KEY_QUERY_NAME', "\"api_key\""
+        buildConfigField 'String', 'API_KEY', "\"1a680bee1c010ab832b442cf27840c79\""
 
         applicationId "ru.countermeasure.moviestvshowsdb"
         minSdkVersion 22
@@ -63,7 +65,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
 
     implementation 'com.github.bumptech.glide:glide:4.10.0'
-    kapt 'com.github.bumptech.glide:compiler:4.10.0'
+    //kapt 'com.github.bumptech.glide:compiler:4.10.0'
 
     implementation 'com.google.android.material:material:1.1.0-alpha10'
 

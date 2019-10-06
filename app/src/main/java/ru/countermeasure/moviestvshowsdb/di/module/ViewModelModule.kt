@@ -6,7 +6,7 @@ import org.kodein.di.DKodein
 import org.kodein.di.Kodein
 import org.kodein.di.generic.*
 import ru.countermeasure.moviestvshowsdb.ui.viewmodels.MainViewModel
-import ru.countermeasure.moviestvshowsdb.di.bindViewModel
+import ru.countermeasure.moviestvshowsdb.extension.bindViewModel
 
 val viewModelModule = Kodein.Module(name = "viewModelModule") {
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(dkodein) }
