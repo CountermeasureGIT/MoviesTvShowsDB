@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mi_popular"
+        android:icon="@drawable/ic_popular"
+        android:title="@string/menu_item_popular"
+        android:checked="true"/>
+    <item
+        android:id="@+id/mi_new"
+        android:icon="@drawable/ic_new"
+        android:title="@string/menu_item_new" />
+    <item
+        android:id="@+id/mi_soon"
+        android:icon="@drawable/ic_soon"
+        android:title="@string/menu_item_soon" />
+</menu>
