@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.util
+package ru.countermeasure.moviestvshowsdb.model.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -14,13 +14,22 @@ fun <ResultType, RequestType> resultLiveData(
         emit(Result.loading())
 
         val invokeResult: LiveData<ResultType> = databaseQuery.invoke()
-        val dbSuccessResult: LiveData<Result<ResultType>> = invokeResult.map { Result.success(it) }
+        val dbLoadingResult: LiveData<Result<ResultType>> = invokeResult.map {
+            Result.loading(it)
+        }
+        val dbSuccessResult: LiveData<Result<ResultType>> = invokeResult.map {
+            Result.success(it)
+        }
 
-        emitSource(dbSuccessResult)
+        emitSource(dbLoadingResult)
+
+        //TODO убрать задержку запроса в сеть
+        delay(1000)
 
         val response = networkCall.invoke()
         if (response is Result.success) {
             saveCallResult(response.data!!)
+            emitSource(dbSuccessResult)
         } else if (response is Result.error) {
             emitSource(invokeResult.map {
                 Result.error(response.message, it)
