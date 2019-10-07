@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import org.kodein.di.DKodein
 import org.kodein.di.Kodein
 import org.kodein.di.generic.*
-import ru.countermeasure.moviestvshowsdb.ui.viewmodels.MainViewModel
+import ru.countermeasure.moviestvshowsdb.ui.activity.MainViewModel
 import ru.countermeasure.moviestvshowsdb.extension.bindViewModel
 
 val viewModelModule = Kodein.Module(name = "viewModelModule") {

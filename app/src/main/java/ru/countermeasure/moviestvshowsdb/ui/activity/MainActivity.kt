@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.ui
+package ru.countermeasure.moviestvshowsdb.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,13 +14,12 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import ru.countermeasure.moviestvshowsdb.R
 import ru.countermeasure.moviestvshowsdb.extension.provideViewModel
-import ru.countermeasure.moviestvshowsdb.ui.viewmodels.MainViewModel
 import ru.countermeasure.moviestvshowsdb.util.Result
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 
     override val kodein: Kodein by closestKodein()
-    private val viewModel : MainViewModel by provideViewModel()
+    private val viewModel: MainViewModel by provideViewModel()
 
     private lateinit var viewAdapter: MoviesAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -34,6 +33,23 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     }
 
     private fun initViews() {
+        bottom_navigation.setOnNavigationItemSelectedListener {
+            Toast.makeText(this, "Item selected: ${it.title}", Toast.LENGTH_SHORT).show()
+            when (it.itemId) {
+                R.id.mi_popular -> {
+                    true
+                }
+                R.id.mi_new -> {
+                    true
+                }
+                R.id.mi_soon -> {
+                    true
+                }
+                else -> false
+            }
+        }
+        bottom_navigation.setOnNavigationItemReselectedListener {}
+
         viewManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         viewAdapter = MoviesAdapter(emptyList())
         rv_topRated.apply {
@@ -48,7 +64,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
     private fun observeViewModelData() {
         viewModel.getTopRatedMovies().observe(this) {
-            when(it) {
+            when (it) {
                 is Result.loading -> {
                     viewAdapter.setMovies(it.data)
                     progressBar.visibility = View.VISIBLE

@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.ui.viewmodels
+package ru.countermeasure.moviestvshowsdb.ui.activity
 
 import androidx.lifecycle.*
 import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie

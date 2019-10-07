@@ -1,7 +1,5 @@
-package ru.countermeasure.moviestvshowsdb.ui
+package ru.countermeasure.moviestvshowsdb.ui.activity
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.movie_item.view.*
 import ru.countermeasure.moviestvshowsdb.R
+import ru.countermeasure.moviestvshowsdb.extension.truncate
 import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 
 class MoviesAdapter(
@@ -30,12 +29,12 @@ class MoviesAdapter(
 
     override fun getItemCount() = movies.size
 
-    override fun onBindViewHolder(holder: MoviesAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = movies[position]
 
         holder.apply {
             tvTitle.text = item.title
-            tvOverview.text = item.overview
+            tvOverview.text = item.overview.truncate()
             Glide.with(ivPoster.context)
                 .load(item.getPosterPathUrl())
                 .thumbnail(Glide.with(ivPoster.context).load(R.drawable.poster_placeholder))
