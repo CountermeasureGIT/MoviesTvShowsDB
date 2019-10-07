@@ -2,7 +2,7 @@ package ru.countermeasure.moviestvshowsdb.model.network
 
 import android.util.Log
 import retrofit2.Response
-import ru.countermeasure.moviestvshowsdb.util.Result
+import ru.countermeasure.moviestvshowsdb.model.util.Result
 
 abstract class BaseDataSource {
 

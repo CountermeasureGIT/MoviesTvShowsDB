@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.ui.activity
+package ru.countermeasure.moviestvshowsdb.ui.main.master
 
 import android.view.LayoutInflater
 import android.view.View

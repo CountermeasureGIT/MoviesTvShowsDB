@@ -8,10 +8,25 @@ import ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover.R
 
 interface MoviesService {
 
-    @GET("discover/movie")
+    @GET("movie/top_rated")
     suspend fun getTopRatedMovies(
         @Query("page") page: Int,
-        @Query("sort_by") sort_by: String = "popularity.desc",
-        @Query("language") language: String = "ru-RU"
+        @Query("language") language: String = "ru-RU",
+        @Query("region") region: String? = null
     ) : Response<ResponseDto<MovieDiscoverResult>>
+
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMovies(
+        @Query("page") page: Int,
+        @Query("language") language: String = "ru-RU",
+        @Query("region") region: String? = null
+    ) : Response<ResponseDto<MovieDiscoverResult>>
+
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMovies(
+        @Query("page") page: Int,
+        @Query("language") language: String = "ru-RU",
+        @Query("region") region: String? = null
+    ) : Response<ResponseDto<MovieDiscoverResult>>
+
 }

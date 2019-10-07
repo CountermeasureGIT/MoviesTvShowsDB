@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import org.kodein.di.DKodein
 import org.kodein.di.Kodein
 import org.kodein.di.generic.*
-import ru.countermeasure.moviestvshowsdb.ui.activity.MainViewModel
 import ru.countermeasure.moviestvshowsdb.extension.bindViewModel
+import ru.countermeasure.moviestvshowsdb.ui.main.SharedViewModel
 
 val viewModelModule = Kodein.Module(name = "viewModelModule") {
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(dkodein) }
 
-    bindViewModel<MainViewModel>() with provider {
-        MainViewModel(instance())
+    bindViewModel<SharedViewModel>() with provider {
+        SharedViewModel(instance())
     }
 }
 

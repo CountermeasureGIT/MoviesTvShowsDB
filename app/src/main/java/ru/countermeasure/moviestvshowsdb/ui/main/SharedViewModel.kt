@@ -1,16 +1,19 @@
-package ru.countermeasure.moviestvshowsdb.ui.activity
+package ru.countermeasure.moviestvshowsdb.ui.main
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 import ru.countermeasure.moviestvshowsdb.repository.MovieDiscoverRepository
-import ru.countermeasure.moviestvshowsdb.util.Result
+import ru.countermeasure.moviestvshowsdb.model.util.Result
 
-class MainViewModel(
+class SharedViewModel(
     private val movieDiscoverRepository: MovieDiscoverRepository
 ) : ViewModel() {
 
     private val reloadTrigger = MutableLiveData<Boolean>()
-    private val topRatedMovies: LiveData<Result<List<Movie>>> =
+    private val movies: LiveData<Result<List<Movie>>> =
         Transformations.switchMap(reloadTrigger) {
             movieDiscoverRepository.getTopRatedMovies()
         }
@@ -27,6 +30,5 @@ class MainViewModel(
         refreshTopRatedMovies()
     }
 
-    fun getTopRatedMovies(): LiveData<Result<List<Movie>>> = topRatedMovies
-
+    fun getTopRatedMovies(): LiveData<Result<List<Movie>>> = movies
 }

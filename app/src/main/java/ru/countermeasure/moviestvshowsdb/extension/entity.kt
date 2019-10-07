@@ -14,6 +14,7 @@ fun MovieDiscoverResult.toMovie(): Movie {
         backdrop_path = backdrop_path,
         original_language = original_language,
         original_title = original_title,
+        genre_ids = genre_ids,
         title = title,
         vote_average = vote_average,
         overview = overview,

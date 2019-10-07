@@ -1,6 +1,5 @@
-package ru.countermeasure.moviestvshowsdb.ui.popular_movies
+package ru.countermeasure.moviestvshowsdb.ui.main.detail
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import ru.countermeasure.moviestvshowsdb.R
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class PopularFragment : Fragment() {
+class MovieDetailFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -28,21 +27,14 @@ class PopularFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_popular, container, false)
+        return inflater.inflate(R.layout.fragment_movie_detail, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            PopularFragment().apply {
+            MovieDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
