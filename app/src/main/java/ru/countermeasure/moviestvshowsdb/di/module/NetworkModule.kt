@@ -12,7 +12,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.countermeasure.moviestvshowsdb.BuildConfig
 import ru.countermeasure.moviestvshowsdb.model.network.MoviesService
-import ru.countermeasure.moviestvshowsdb.util.temp.LiveDataCallAdapterFactory
 
 val networkModule = Kodein.Module(name = "networkModule") {
     constant("baseUrl") with BuildConfig.BASE_API_URL
@@ -25,10 +24,6 @@ val networkModule = Kodein.Module(name = "networkModule") {
         OkHttpClient.Builder()
             .addInterceptor(instance())
             .build()
-    }
-
-    bind<LiveDataCallAdapterFactory>() with singleton {
-        LiveDataCallAdapterFactory()
     }
 
     bind<Interceptor>() with singleton {
@@ -49,7 +44,6 @@ val networkModule = Kodein.Module(name = "networkModule") {
         Retrofit.Builder()
             .baseUrl(instance<String>("baseUrl"))
             .addConverterFactory(GsonConverterFactory.create(instance()))
-            .addCallAdapterFactory(instance())
             .client(instance())
             .build()
     }

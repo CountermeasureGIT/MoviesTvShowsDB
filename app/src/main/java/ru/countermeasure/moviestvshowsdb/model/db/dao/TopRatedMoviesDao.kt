@@ -5,6 +5,7 @@ import androidx.room.*
 import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 import ru.countermeasure.moviestvshowsdb.model.db.entity.MovieCategoryType
 import ru.countermeasure.moviestvshowsdb.model.db.entity.MovieToMovieCategory
+import ru.countermeasure.moviestvshowsdb.model.util.EnumMovieTypeDataConverter
 
 @Dao
 interface TopRatedMoviesDao {
@@ -15,11 +16,11 @@ interface TopRatedMoviesDao {
     suspend fun saveMoviesCategory(movies: List<MovieToMovieCategory>)
 
     @Query("DELETE FROM movie_to_movie_category WHERE type = :type")
-    suspend fun deleteMovieToMovieCategory(type: MovieCategoryType)
+    suspend fun deleteMovieToMovieCategory(@TypeConverters(EnumMovieTypeDataConverter::class) type: MovieCategoryType)
 
-    @Query("SELECT * FROM movies ORDER BY popularity DESC")
+    @Query("SELECT * FROM movies ORDER BY vote_average DESC")
     fun getTopRatedMovies(): LiveData<List<Movie>>
 
-    @Query("SELECT * FROM movies as m JOIN movie_to_movie_category as mmc ON m.id = mmc.movie_id WHERE mmc.type = :type")
-    fun getMoviesByCategory(type: MovieCategoryType): LiveData<List<Movie>>
+    @Query("SELECT m.* FROM movies as m JOIN movie_to_movie_category as mmc ON m.id = mmc.movie_id WHERE mmc.type = :type ORDER BY m.release_date ASC")
+    fun getMoviesByCategory(@TypeConverters(EnumMovieTypeDataConverter::class) type: MovieCategoryType): LiveData<List<Movie>>
 }

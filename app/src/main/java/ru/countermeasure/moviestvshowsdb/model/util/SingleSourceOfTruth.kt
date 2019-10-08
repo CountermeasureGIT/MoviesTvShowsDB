@@ -23,13 +23,10 @@ fun <ResultType, RequestType> resultLiveData(
 
         emitSource(dbLoadingResult)
 
-        //TODO убрать задержку запроса в сеть
-        delay(1000)
-
         val response = networkCall.invoke()
         if (response is Result.success) {
-            saveCallResult(response.data!!)
             emitSource(dbSuccessResult)
+            saveCallResult(response.data)
         } else if (response is Result.error) {
             emitSource(invokeResult.map {
                 Result.error(response.message, it)

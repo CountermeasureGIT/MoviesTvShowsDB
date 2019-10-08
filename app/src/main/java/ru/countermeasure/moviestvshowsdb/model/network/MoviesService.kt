@@ -12,21 +12,21 @@ interface MoviesService {
     suspend fun getTopRatedMovies(
         @Query("page") page: Int,
         @Query("language") language: String = "ru-RU",
-        @Query("region") region: String? = null
+        @Query("region") region: String? = "RU"
     ) : Response<ResponseDto<MovieDiscoverResult>>
 
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(
         @Query("page") page: Int,
         @Query("language") language: String = "ru-RU",
-        @Query("region") region: String? = null
+        @Query("region") region: String? = "RU"
     ) : Response<ResponseDto<MovieDiscoverResult>>
 
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(
         @Query("page") page: Int,
         @Query("language") language: String = "ru-RU",
-        @Query("region") region: String? = null
+        @Query("region") region: String? = "RU"
     ) : Response<ResponseDto<MovieDiscoverResult>>
 
 }

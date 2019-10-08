@@ -1,10 +1,13 @@
 package ru.countermeasure.moviestvshowsdb.ui.main.master
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.movie_item.view.*
@@ -12,14 +15,8 @@ import ru.countermeasure.moviestvshowsdb.R
 import ru.countermeasure.moviestvshowsdb.extension.truncate
 import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
 
-class MoviesAdapter(
-    private var movies: List<Movie>
-) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
-
-    fun setMovies(newMovies: List<Movie>?) {
-        movies = newMovies ?: emptyList()
-        notifyDataSetChanged()
-    }
+class MoviesAdapter(private val clickListener: (Movie) -> Unit) :
+    ListAdapter<Movie, MoviesAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -27,25 +24,37 @@ class MoviesAdapter(
         return ViewHolder(view)
     }
 
-    override fun getItemCount() = movies.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = movies[position]
-
-        holder.apply {
-            tvTitle.text = item.title
-            tvOverview.text = item.overview.truncate()
-            Glide.with(ivPoster.context)
-                .load(item.getPosterPathUrl())
-                .thumbnail(Glide.with(ivPoster.context).load(R.drawable.poster_placeholder))
-                .centerCrop()
-                .into(ivPoster)
-        }
+        holder.bind(getItem(position), clickListener)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvTitle: TextView = itemView.tv_title
-        val ivPoster: ImageView = itemView.iv_poster
-        val tvOverview: TextView = itemView.tv_overview
+        @SuppressLint("SetTextI18n")
+        fun bind(movie: Movie, clickListener: (Movie) -> Unit) {
+            itemView.apply {
+                tv_title.text = movie.title
+                tv_overview.text = movie.overview.truncate()
+                tv_rating.text = "${movie.vote_average} (${movie.vote_count})"
+                tv_release_date.text = movie.release_date
+
+                Glide.with(iv_poster.context)
+                    .load(movie.getPosterPathUrl())
+                    .thumbnail(Glide.with(iv_poster.context).load(R.drawable.poster_placeholder))
+                    .centerCrop()
+                    .into(iv_poster)
+                setOnClickListener { clickListener(movie) }
+            }
+        }
+    }
+}
+
+private class DiffCallback : DiffUtil.ItemCallback<Movie>() {
+
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem == newItem
     }
 }

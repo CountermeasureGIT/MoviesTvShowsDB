@@ -1,6 +1,6 @@
 package ru.countermeasure.moviestvshowsdb.extension
 
-fun String.truncate(size: Int = 240): String {
+fun String.truncate(size: Int = 300): String {
     require(size >= 0) { "Size must be non-negative, was $size" }
 
     val trimmed = this.trimEnd()

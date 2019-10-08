@@ -1,6 +1,7 @@
 package ru.countermeasure.moviestvshowsdb.ui.main.master
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -57,17 +58,20 @@ class MoviesListFragment : Fragment(), KodeinAware {
         viewModel.getTopRatedMovies().observe(this) {
             when (it) {
                 is Result.loading -> {
-                    viewAdapter.setMovies(it.data)
+                    viewAdapter.submitList(it.data)
                     progressBar.visibility = View.VISIBLE
+                    Log.d(this.javaClass.name, "RESULT LOADING ${it.data?.size}")
                 }
                 is Result.error -> {
                     progressBar.visibility = View.GONE
-                    viewAdapter.setMovies(it.cachedData)
+                    viewAdapter.submitList(it.cachedData)
+                    Log.d(this.javaClass.name, "RESULT ERROR ${it.cachedData?.size}")
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                 }
                 is Result.success -> {
                     progressBar.visibility = View.GONE
-                    viewAdapter.setMovies(it.data)
+                    viewAdapter.submitList(it.data)
+                    Log.d(this.javaClass.name, "RESULT SUCCESS ${it.data.size}")
                 }
             }
         }
@@ -75,7 +79,13 @@ class MoviesListFragment : Fragment(), KodeinAware {
 
     private fun initViews() {
         viewManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        viewAdapter = MoviesAdapter(emptyList())
+        viewAdapter = MoviesAdapter {
+            Toast.makeText(
+                this.context,
+                "Item clicked ${it.title}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
         rv_topRated.apply {
             layoutManager = viewManager
             adapter = viewAdapter
