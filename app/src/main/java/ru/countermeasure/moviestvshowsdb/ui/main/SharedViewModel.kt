@@ -1,13 +1,12 @@
 package ru.countermeasure.moviestvshowsdb.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
+import ru.countermeasure.moviestvshowsdb.data.db.entity.Movie
 import ru.countermeasure.moviestvshowsdb.repository.MovieDiscoverRepository
-import ru.countermeasure.moviestvshowsdb.model.util.Result
+import ru.countermeasure.moviestvshowsdb.data.util.Result
 import ru.countermeasure.moviestvshowsdb.util.DoubleLiveData
 
 enum class AppScreen {

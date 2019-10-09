@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.model.util
+package ru.countermeasure.moviestvshowsdb.data.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -6,7 +6,7 @@ import androidx.lifecycle.map
 import kotlinx.coroutines.*
 
 fun <ResultType, RequestType> resultLiveData(
-    databaseQuery: () -> LiveData<ResultType>,
+    databaseQuery: suspend () -> LiveData<ResultType>,
     networkCall: suspend () -> Result<RequestType>,
     saveCallResult: suspend (RequestType) -> Unit
 ): LiveData<Result<ResultType>> =

@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover
+package ru.countermeasure.moviestvshowsdb.data.network.response.paged
 
 data class ResponseDto<T>(
     val page: Int,

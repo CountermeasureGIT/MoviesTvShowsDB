@@ -6,13 +6,13 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
-import ru.countermeasure.moviestvshowsdb.model.db.AppDatabase
-import ru.countermeasure.moviestvshowsdb.model.db.dao.TopRatedMoviesDao
+import ru.countermeasure.moviestvshowsdb.data.db.AppDatabase
+import ru.countermeasure.moviestvshowsdb.data.db.dao.MoviesDao
 
 val dbModule = Kodein.Module(name = "dbModule") {
     bind<AppDatabase>() with singleton { provideDatabase(instance()) }
 
-    bind<TopRatedMoviesDao>() with singleton { instance<AppDatabase>().topRatedMoviesDao() }
+    bind<MoviesDao>() with singleton { instance<AppDatabase>().moviesDao() }
 }
 
 private fun provideDatabase(context: Context): AppDatabase =

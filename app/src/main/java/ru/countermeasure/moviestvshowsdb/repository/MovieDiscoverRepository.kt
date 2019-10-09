@@ -4,14 +4,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import ru.countermeasure.moviestvshowsdb.extension.toMovie
-import ru.countermeasure.moviestvshowsdb.model.db.dao.TopRatedMoviesDao
-import ru.countermeasure.moviestvshowsdb.model.db.entity.MovieCategoryType
-import ru.countermeasure.moviestvshowsdb.model.db.entity.MovieToMovieCategory
-import ru.countermeasure.moviestvshowsdb.model.network.MoviesRemoteDataSource
-import ru.countermeasure.moviestvshowsdb.model.util.resultLiveData
+import ru.countermeasure.moviestvshowsdb.data.db.dao.MoviesDao
+import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieCategoryType
+import ru.countermeasure.moviestvshowsdb.data.network.MoviesRemoteDataSource
+import ru.countermeasure.moviestvshowsdb.data.util.resultLiveData
+import ru.countermeasure.moviestvshowsdb.extension.toMovieToMovieCategory
 
 class MovieDiscoverRepository(
-    private val moviesDao: TopRatedMoviesDao,
+    private val moviesDao: MoviesDao,
     private val moviesRemoteDataSource: MoviesRemoteDataSource
 ) : CoroutineScope {
     override val coroutineContext = SupervisorJob() + Dispatchers.IO
@@ -32,20 +32,14 @@ class MovieDiscoverRepository(
         { moviesDao.getMoviesByCategory(MovieCategoryType.NEW) },
         { moviesRemoteDataSource.fetchNowPlayingMoviesData() },
         { responseDto ->
+            moviesDao.saveMovies(responseDto.results.map { movieDiscoverResult ->
+                movieDiscoverResult.toMovie()
+            })
+
             val category = MovieCategoryType.NEW
-
-            moviesDao.saveMovies(
-                responseDto.results.map { movieDiscoverResult ->
-                    movieDiscoverResult.toMovie()
-                }
-            )
-
-            moviesDao.deleteMovieToMovieCategory(category)
-            moviesDao.saveMoviesCategory(
-                responseDto.results.map {
-                    MovieToMovieCategory(it.id, category)
-                }
-            )
+            moviesDao.replaceMovieToCategoryList(responseDto.results.map { movieDiscoverResult ->
+                movieDiscoverResult.toMovieToMovieCategory(category)
+            }, category)
         }
     )
 
@@ -53,20 +47,16 @@ class MovieDiscoverRepository(
         { moviesDao.getMoviesByCategory(MovieCategoryType.SOON) },
         { moviesRemoteDataSource.fetchUpcomingMoviesData() },
         { responseDto ->
+            moviesDao.saveMovies(responseDto.results.map { movieDiscoverResult ->
+                movieDiscoverResult.toMovie()
+            })
+
             val category = MovieCategoryType.SOON
-
-            moviesDao.saveMovies(
-                responseDto.results.map { movieDiscoverResult ->
-                    movieDiscoverResult.toMovie()
-                }
-            )
-
-            moviesDao.deleteMovieToMovieCategory(category)
-            moviesDao.saveMoviesCategory(
-                responseDto.results.map {
-                    MovieToMovieCategory(it.id, category)
-                }
-            )
+            moviesDao.replaceMovieToCategoryList(responseDto.results.map { movieDiscoverResult ->
+                movieDiscoverResult.toMovieToMovieCategory(category)
+            }, category)
         }
     )
+
+
 }

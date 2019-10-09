@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +11,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.movie_item.view.*
 import ru.countermeasure.moviestvshowsdb.R
 import ru.countermeasure.moviestvshowsdb.extension.truncate
-import ru.countermeasure.moviestvshowsdb.model.db.entity.Movie
+import ru.countermeasure.moviestvshowsdb.data.db.entity.Movie
 
 class MoviesAdapter(private val clickListener: (Movie) -> Unit) :
     ListAdapter<Movie, MoviesAdapter.ViewHolder>(DiffCallback()) {

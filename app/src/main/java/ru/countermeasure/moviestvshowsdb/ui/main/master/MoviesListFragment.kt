@@ -1,5 +1,7 @@
 package ru.countermeasure.moviestvshowsdb.ui.main.master
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_movies_list.*
@@ -16,16 +19,11 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 
 import ru.countermeasure.moviestvshowsdb.R
-import ru.countermeasure.moviestvshowsdb.model.util.Result
+import ru.countermeasure.moviestvshowsdb.data.util.Result
 import ru.countermeasure.moviestvshowsdb.ui.main.SharedViewModel
 import ru.countermeasure.moviestvshowsdb.extension.provideViewModelWithActivity
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class MoviesListFragment : Fragment(), KodeinAware {
-    private var param1: String? = null
-    private var param2: String? = null
 
     override val kodein: Kodein by closestKodein()
     private val viewModel: SharedViewModel by provideViewModelWithActivity()
@@ -33,12 +31,10 @@ class MoviesListFragment : Fragment(), KodeinAware {
     private lateinit var viewAdapter: MoviesAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var listener: OnItemSelectedListener
+
+    interface OnItemSelectedListener {
+        fun onMovieItemSelected(movieId: Int)
     }
 
     override fun onCreateView(
@@ -46,6 +42,12 @@ class MoviesListFragment : Fragment(), KodeinAware {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_movies_list, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        require(context is OnItemSelectedListener)
+        listener = context
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,14 +80,22 @@ class MoviesListFragment : Fragment(), KodeinAware {
     }
 
     private fun initViews() {
-        viewManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        viewAdapter = MoviesAdapter {
+        viewManager =
+            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            } else {
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
+        viewAdapter = MoviesAdapter { movieItem ->
             Toast.makeText(
                 this.context,
-                "Item clicked ${it.title}",
+                "Item clicked ${movieItem.title}",
                 Toast.LENGTH_SHORT
             ).show()
+
+            listener.onMovieItemSelected(movieItem.id)
         }
+
         rv_topRated.apply {
             layoutManager = viewManager
             adapter = viewAdapter
@@ -94,16 +104,5 @@ class MoviesListFragment : Fragment(), KodeinAware {
         floatingActionButton.setOnClickListener {
             viewModel.onRefreshAction()
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MoviesListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

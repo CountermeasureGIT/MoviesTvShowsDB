@@ -1,10 +1,10 @@
-package ru.countermeasure.moviestvshowsdb.model.db.entity
+package ru.countermeasure.moviestvshowsdb.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import ru.countermeasure.moviestvshowsdb.BuildConfig
-import ru.countermeasure.moviestvshowsdb.model.util.IntegerListDataConverter
+import ru.countermeasure.moviestvshowsdb.data.util.IntegerListDataConverter
 
 @Entity(tableName = "movies")
 @TypeConverters(IntegerListDataConverter::class)

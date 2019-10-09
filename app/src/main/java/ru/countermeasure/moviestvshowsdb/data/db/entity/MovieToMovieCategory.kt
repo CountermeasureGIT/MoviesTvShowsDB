@@ -1,10 +1,10 @@
-package ru.countermeasure.moviestvshowsdb.model.db.entity
+package ru.countermeasure.moviestvshowsdb.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import ru.countermeasure.moviestvshowsdb.model.util.EnumMovieTypeDataConverter
+import ru.countermeasure.moviestvshowsdb.data.util.EnumMovieTypeDataConverter
 
 @Entity(
     tableName = "movie_to_movie_category",
@@ -18,10 +18,10 @@ import ru.countermeasure.moviestvshowsdb.model.util.EnumMovieTypeDataConverter
 )
 @TypeConverters(EnumMovieTypeDataConverter::class)
 data class MovieToMovieCategory(
-    val movie_id: Int,
-    val type: MovieCategoryType,
     @PrimaryKey
-    val id: Int? = null
+    val id: Int? = null,
+    val movie_id: Int,
+    val type: MovieCategoryType
 )
 
 enum class MovieCategoryType(val type_id: Int) {

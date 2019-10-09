@@ -1,7 +1,7 @@
-package ru.countermeasure.moviestvshowsdb.model.network.response.movie_discover
+package ru.countermeasure.moviestvshowsdb.data.network.response.paged.movie_discover
 
 import androidx.room.TypeConverters
-import ru.countermeasure.moviestvshowsdb.model.util.IntegerListDataConverter
+import ru.countermeasure.moviestvshowsdb.data.util.IntegerListDataConverter
 
 @TypeConverters(IntegerListDataConverter::class)
 data class MovieDiscoverResult(

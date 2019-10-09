@@ -1,4 +1,4 @@
-package ru.countermeasure.moviestvshowsdb.model.util
+package ru.countermeasure.moviestvshowsdb.data.util
 
 sealed class Result<out T> {
     data class error<T>(val message: String, val cachedData: T? = null) : Result<T>()

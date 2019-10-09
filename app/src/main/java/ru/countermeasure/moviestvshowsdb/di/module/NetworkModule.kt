@@ -11,7 +11,7 @@ import org.kodein.di.generic.with
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.countermeasure.moviestvshowsdb.BuildConfig
-import ru.countermeasure.moviestvshowsdb.model.network.MoviesService
+import ru.countermeasure.moviestvshowsdb.data.network.MoviesService
 
 val networkModule = Kodein.Module(name = "networkModule") {
     constant("baseUrl") with BuildConfig.BASE_API_URL

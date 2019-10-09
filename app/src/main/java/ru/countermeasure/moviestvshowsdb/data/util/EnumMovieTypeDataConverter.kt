@@ -1,7 +1,7 @@
-package ru.countermeasure.moviestvshowsdb.model.util
+package ru.countermeasure.moviestvshowsdb.data.util
 
 import androidx.room.TypeConverter
-import ru.countermeasure.moviestvshowsdb.model.db.entity.MovieCategoryType
+import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieCategoryType
 
 class EnumMovieTypeDataConverter {
 

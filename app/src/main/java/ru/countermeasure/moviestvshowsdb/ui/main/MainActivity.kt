@@ -2,15 +2,17 @@ package ru.countermeasure.moviestvshowsdb.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import ru.countermeasure.moviestvshowsdb.R
 import ru.countermeasure.moviestvshowsdb.extension.provideViewModel
+import ru.countermeasure.moviestvshowsdb.ui.main.detail.MovieDetailFragment
 import ru.countermeasure.moviestvshowsdb.ui.main.master.MoviesListFragment
 
-class MainActivity : AppCompatActivity(), KodeinAware {
+class MainActivity : AppCompatActivity(), MoviesListFragment.OnItemSelectedListener, KodeinAware {
 
     override val kodein: Kodein by closestKodein()
 
@@ -20,10 +22,10 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initViews()
+        initViews(savedInstanceState)
     }
 
-    private fun initViews() {
+    private fun initViews(savedInstanceState: Bundle?) {
         bottom_navigation.setOnNavigationItemSelectedListener {
             //Toast.makeText(this, "Item selected: ${it.title}", Toast.LENGTH_SHORT).show()
             when (it.itemId) {
@@ -44,9 +46,19 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         }
         bottom_navigation.setOnNavigationItemReselectedListener {}
 
-        val tr = supportFragmentManager.beginTransaction()
-        tr.replace(R.id.fl_placeholder, MoviesListFragment(), MOVIES_LIST_FRAGMENT_TAG)
-        tr.commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fl_placeholder, MoviesListFragment(), MOVIES_LIST_FRAGMENT_TAG)
+                .commit()
+        }
+    }
+
+    override fun onMovieItemSelected(movieId: Int) {
+        val movieDetailFragment = MovieDetailFragment.newInstance(movieId)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_placeholder, movieDetailFragment)
+            .addToBackStack("movie_item_selected")
+            .commit()
     }
 
     companion object {
