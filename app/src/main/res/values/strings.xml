@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Movies &amp; Tv shows DB</string>
 
+    <string name="movie_discover_title">Movie discover</string>
+    <string name="movies_overview_title">Movie overview</string>
+
     <!--Error messages -->
     <string name="unknown_error">Unknown error</string>
     <string name="network_error">Error connecting to the internet</string>
@@ -16,6 +19,4 @@
     <string name="menu_item_new">New</string>
     <string name="menu_item_soon">Soon</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

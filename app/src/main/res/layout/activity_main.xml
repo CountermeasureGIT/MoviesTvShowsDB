@@ -11,13 +11,17 @@
         android:id="@+id/fl_placeholder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        app:menu="@menu/main_bottom_sheet_menu" />
+        app:menu="@menu/main_bottom_sheet_menu">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </LinearLayout>

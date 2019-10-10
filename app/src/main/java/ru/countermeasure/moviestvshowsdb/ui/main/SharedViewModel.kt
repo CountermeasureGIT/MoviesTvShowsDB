@@ -41,10 +41,6 @@ class SharedViewModel(
             }
         }
 
-    init {
-        refreshMovies()
-    }
-
     fun onRefreshAction() {
         refreshMovies()
     }
@@ -58,6 +54,8 @@ class SharedViewModel(
     }
 
     private fun triggerScreenChange(newScreen: AppScreen) {
+        if (newScreen == screenChangedTrigger.value)
+            return
         screenChangedTrigger.value = newScreen
     }
 
