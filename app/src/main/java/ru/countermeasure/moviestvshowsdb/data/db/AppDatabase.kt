@@ -3,13 +3,14 @@ package ru.countermeasure.moviestvshowsdb.data.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import ru.countermeasure.moviestvshowsdb.data.db.dao.MoviesDao
+import ru.countermeasure.moviestvshowsdb.data.db.entity.Cast
 import ru.countermeasure.moviestvshowsdb.data.db.entity.Movie
 import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieDetail
 import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieToMovieCategory
 
 
 @Database(
-    entities = [Movie::class, MovieToMovieCategory::class, MovieDetail::class],
+    entities = [Movie::class, MovieToMovieCategory::class, MovieDetail::class, Cast::class],
     version = 1,
     exportSchema = false
 )

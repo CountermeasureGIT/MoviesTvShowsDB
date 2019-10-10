@@ -16,4 +16,7 @@ class MoviesRemoteDataSource(
     suspend fun fetchMovieDetailData(movieId: Int) =
         getResult { service.getMovieDetail(movieId) }
 
+    suspend fun fetchMovieCreditsData(movieId: Int) =
+        getResult { service.getMovieCredits(movieId) }
+
 }

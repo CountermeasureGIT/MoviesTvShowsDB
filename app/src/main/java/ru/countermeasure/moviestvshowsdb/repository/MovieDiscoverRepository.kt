@@ -8,6 +8,8 @@ import ru.countermeasure.moviestvshowsdb.data.db.dao.MoviesDao
 import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieCategoryType
 import ru.countermeasure.moviestvshowsdb.data.network.MoviesRemoteDataSource
 import ru.countermeasure.moviestvshowsdb.data.util.resultLiveData
+import ru.countermeasure.moviestvshowsdb.extension.toCastEntity
+import ru.countermeasure.moviestvshowsdb.extension.toMovieDetail
 import ru.countermeasure.moviestvshowsdb.extension.toMovieToMovieCategory
 
 class MovieDiscoverRepository(
@@ -58,5 +60,26 @@ class MovieDiscoverRepository(
         }
     )
 
+    fun getMovieDetail(movieId: Int) = resultLiveData(
+        { moviesDao.getMovieDetail(movieId) },
+        { moviesRemoteDataSource.fetchMovieDetailData(movieId) },
+        { responseDto ->
+            moviesDao.saveMovieDetail(responseDto.toMovieDetail())
+        }
+    )
+
+    fun getMovieCredits(movieId: Int) = resultLiveData(
+        { moviesDao.getMovieCredits(movieId) },
+        { moviesRemoteDataSource.fetchMovieCreditsData(movieId) },
+        { responseDto ->
+            moviesDao.saveMovieCredits(
+                responseDto.cast.subList(
+                    0,
+                    responseDto.cast.size.coerceAtMost(20)
+                ).map { cast ->
+                    cast.toCastEntity(movieId)
+                })
+        }
+    )
 
 }

@@ -3,7 +3,6 @@ package ru.countermeasure.moviestvshowsdb.ui.main.master
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,20 +59,17 @@ class MoviesListFragment : Fragment(), KodeinAware {
         viewModel.getTopRatedMovies().observe(this) {
             when (it) {
                 is Result.loading -> {
-                    viewAdapter.submitList(it.data)
+                    viewAdapter.submitList(it.cachedData)
                     progressBar.visibility = View.VISIBLE
-                    Log.d(this.javaClass.name, "RESULT LOADING ${it.data?.size}")
                 }
                 is Result.error -> {
                     progressBar.visibility = View.GONE
                     viewAdapter.submitList(it.cachedData)
-                    Log.d(this.javaClass.name, "RESULT ERROR ${it.cachedData?.size}")
                     Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
                 }
                 is Result.success -> {
                     progressBar.visibility = View.GONE
                     viewAdapter.submitList(it.data)
-                    Log.d(this.javaClass.name, "RESULT SUCCESS ${it.data.size}")
                 }
             }
         }
@@ -86,13 +82,8 @@ class MoviesListFragment : Fragment(), KodeinAware {
             } else {
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
-        viewAdapter = MoviesAdapter { movieItem ->
-            Toast.makeText(
-                this.context,
-                "Item clicked ${movieItem.title}",
-                Toast.LENGTH_SHORT
-            ).show()
 
+        viewAdapter = MoviesAdapter { movieItem ->
             listener.onMovieItemSelected(movieItem.id)
         }
 

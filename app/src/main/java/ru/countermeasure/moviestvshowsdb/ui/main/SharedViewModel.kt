@@ -49,15 +49,15 @@ class SharedViewModel(
         refreshMovies()
     }
 
-    fun onScreenChangeAction(currentScreen: AppScreen) {
-        changeCurrentScreen(currentScreen)
+    fun screenChanged(currentScreen: AppScreen) {
+        triggerScreenChange(currentScreen)
     }
 
     private fun refreshMovies() {
         reloadTrigger.value = true
     }
 
-    private fun changeCurrentScreen(newScreen: AppScreen) {
+    private fun triggerScreenChange(newScreen: AppScreen) {
         screenChangedTrigger.value = newScreen
     }
 

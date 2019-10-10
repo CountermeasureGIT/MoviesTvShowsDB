@@ -6,6 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.countermeasure.moviestvshowsdb.data.network.response.paged.movie_discover.MovieDiscoverResult
 import ru.countermeasure.moviestvshowsdb.data.network.response.paged.ResponseDto
+import ru.countermeasure.moviestvshowsdb.data.network.response.single.movie_credits.MovieCreditsResponse
 import ru.countermeasure.moviestvshowsdb.data.network.response.single.movie_detail.MovieDetailResponse
 
 interface MoviesService {
@@ -36,4 +37,9 @@ interface MoviesService {
         @Path("movie_id") movie_id: Int,
         @Query("language") language: String = "ru-RU"
     ): Response<MovieDetailResponse>
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movie_id: Int
+    ): Response<MovieCreditsResponse>
 }

@@ -2,7 +2,6 @@ package ru.countermeasure.moviestvshowsdb.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -27,18 +26,17 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnItemSelectedListe
 
     private fun initViews(savedInstanceState: Bundle?) {
         bottom_navigation.setOnNavigationItemSelectedListener {
-            //Toast.makeText(this, "Item selected: ${it.title}", Toast.LENGTH_SHORT).show()
             when (it.itemId) {
                 R.id.mi_popular -> {
-                    viewModel.onScreenChangeAction(AppScreen.POPULAR)
+                    viewModel.screenChanged(AppScreen.POPULAR)
                     true
                 }
                 R.id.mi_new -> {
-                    viewModel.onScreenChangeAction(AppScreen.NEW)
+                    viewModel.screenChanged(AppScreen.NEW)
                     true
                 }
                 R.id.mi_soon -> {
-                    viewModel.onScreenChangeAction(AppScreen.SOON)
+                    viewModel.screenChanged(AppScreen.SOON)
                     true
                 }
                 else -> false
@@ -54,6 +52,7 @@ class MainActivity : AppCompatActivity(), MoviesListFragment.OnItemSelectedListe
     }
 
     override fun onMovieItemSelected(movieId: Int) {
+        //bottom_navigation.visibility = View.GONE
         val movieDetailFragment = MovieDetailFragment.newInstance(movieId)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fl_placeholder, movieDetailFragment)

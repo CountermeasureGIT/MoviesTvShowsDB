@@ -3,6 +3,7 @@ package ru.countermeasure.moviestvshowsdb.data.db.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import ru.countermeasure.moviestvshowsdb.BuildConfig
 
 @Entity(
     tableName = "movie_detail",
@@ -30,7 +31,7 @@ data class MovieDetail(
     val poster_path: String?,
     val production_countries: String,
     val release_date: String,
-    val revenue: Int,
+    val revenue: String,
     val runtime: Int?,
     val spoken_languages: String,
     val status: String,
@@ -39,4 +40,24 @@ data class MovieDetail(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-)
+) {
+    fun getPosterUrl(): String? {
+        var url: String? = null
+        if (!poster_path.isNullOrBlank()) {
+            url =
+                "${BuildConfig.BASE_IMAGE_API_URL}/w500/$poster_path" +
+                        "?${BuildConfig.API_KEY_QUERY_NAME}=${BuildConfig.API_KEY}"
+        }
+        return url
+    }
+
+    fun getBackdropUrl(): String? {
+        var url: String? = null
+        if (!backdrop_path.isNullOrBlank()) {
+            url =
+                "${BuildConfig.BASE_IMAGE_API_URL}/w780/$backdrop_path" +
+                        "?${BuildConfig.API_KEY_QUERY_NAME}=${BuildConfig.API_KEY}"
+        }
+        return url
+    }
+}

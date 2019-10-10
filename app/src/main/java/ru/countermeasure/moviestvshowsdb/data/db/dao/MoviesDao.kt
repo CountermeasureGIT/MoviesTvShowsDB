@@ -2,10 +2,7 @@ package ru.countermeasure.moviestvshowsdb.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import ru.countermeasure.moviestvshowsdb.data.db.entity.Movie
-import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieCategoryType
-import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieDetail
-import ru.countermeasure.moviestvshowsdb.data.db.entity.MovieToMovieCategory
+import ru.countermeasure.moviestvshowsdb.data.db.entity.*
 import ru.countermeasure.moviestvshowsdb.data.util.EnumMovieTypeDataConverter
 
 @Dao
@@ -14,7 +11,10 @@ interface MoviesDao {
     suspend fun saveMovies(movies: List<Movie>)
 
     @Transaction
-    suspend fun replaceMovieToCategoryList(movies: List<MovieToMovieCategory>, type: MovieCategoryType) {
+    suspend fun replaceMovieToCategoryList(
+        movies: List<MovieToMovieCategory>,
+        type: MovieCategoryType
+    ) {
         deleteMovieToMovieCategory(type)
         saveMovieToMovieCategory(movies)
     }
@@ -36,4 +36,10 @@ interface MoviesDao {
 
     @Query("SELECT * FROM movie_detail WHERE movie_id = :movieId")
     fun getMovieDetail(movieId: Int): LiveData<MovieDetail>
+
+    @Query("SELECT * FROM `cast` WHERE movie_id = :movieId")
+    fun getMovieCredits(movieId: Int): LiveData<List<Cast>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveMovieCredits(cast: List<Cast>)
 }

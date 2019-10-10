@@ -37,7 +37,7 @@ class MoviesAdapter(private val clickListener: (Movie) -> Unit) :
 
                 Glide.with(iv_poster.context)
                     .load(movie.getPosterPathUrl())
-                    .thumbnail(Glide.with(iv_poster.context).load(R.drawable.poster_placeholder))
+                    .thumbnail(Glide.with(iv_poster.context).load(R.drawable.placeholder_6x9))
                     .centerCrop()
                     .into(iv_poster)
                 setOnClickListener { clickListener(movie) }

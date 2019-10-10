@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ui.main.detail.MovieDetailFragment">
 
-        <ImageView
-            android:id="@+id/iv_movie_picture"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small"
+            app:constraint_referenced_ids="tv_genre,iv_genre,iv_rating,iv_release_date,tv_title,tv_release_date_label,barrier_genres,tv_release_date,tv_rating,tv_overview_label,tv_rating_label,tv_overview,tv_actors_label,rv_actors,tv_genre_label,iv_backdrop" />
+
+        <ImageView
+            android:id="@+id/iv_backdrop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            app:srcCompat="@drawable/placeholder_16x9" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_small"
-            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_small"
             android:layout_marginEnd="@dimen/spacing_small"
+            android:fontFamily="sans-serif-black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_movie_picture"
+            app:layout_constraintTop_toBottomOf="@+id/iv_backdrop"
             tools:text="Spider-Man: Into the Spider-Verse" />
 
         <TextView
@@ -130,7 +139,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="tv_genre,tv_genre_label" />
+            app:constraint_referenced_ids="tv_genre,tv_genre_label"
+            tools:layout_editor_absoluteY="426dp" />
 
         <TextView
             android:id="@+id/tv_overview_label"
@@ -154,7 +164,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_overview_label"
-            tools:text="@tools:sample/lorem/random" />
+            tools:text="@tools:sample/lorem" />
 
         <TextView
             android:id="@+id/tv_actors_label"
@@ -173,8 +183,22 @@
             android:layout_marginTop="@dimen/spacing_small"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            android:layout_centerHorizontal="true"
             app:layout_constraintTop_toBottomOf="@id/tv_actors_label"
-            tools:listitem="@layout/actor_item" />
+            tools:listitem="@layout/actor_item">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
