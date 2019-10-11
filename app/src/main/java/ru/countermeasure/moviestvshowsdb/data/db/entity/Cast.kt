@@ -13,11 +13,12 @@ import ru.countermeasure.moviestvshowsdb.BuildConfig
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("movie_id")
         )
+    ),
+    primaryKeys = arrayOf(
+        "movie_id", "order"
     )
 )
 data class Cast(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
     val movie_id: Int,
     val order: Int,
     val character: String,

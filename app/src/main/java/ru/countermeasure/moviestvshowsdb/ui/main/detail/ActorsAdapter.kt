@@ -45,7 +45,7 @@ class ActorsAdapter :
 private class DiffCallback : DiffUtil.ItemCallback<Cast>() {
 
     override fun areItemsTheSame(oldItem: Cast, newItem: Cast): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.order == newItem.order
     }
 
     override fun areContentsTheSame(oldItem: Cast, newItem: Cast): Boolean {
