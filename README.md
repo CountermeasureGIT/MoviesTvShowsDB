@@ -13,9 +13,15 @@ MoviesTvShowsDB
 
 Использованные библиотеки:
 Kodein - dependency injection
+
 Kotlin Coroutines - асихнронные операции
+
 Room - кеширование данных
+
 Retrofit2 - запросы к REST API https://developers.themoviedb.org/3/
+
 Gson - парсинг JSON
+
 Glide - асихнронная загрузка изображений
+
 Google Material Components for Android - Bottom Navigation View
