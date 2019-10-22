@@ -25,3 +25,9 @@ Gson - парсинг JSON
 Glide - асихнронная загрузка изображений
 
 Google Material Components for Android - Bottom Navigation View
+
+
+![Alt text](/scr/device-2019-10-22-133650.png?raw=true)
+![Alt text](/scr/device-2019-10-22-133718.png?raw=true)
+![Alt text](/scr/device-2019-10-22-133827.png?raw=true)
+![Alt text](/scr/Screenshot_2019_10_22_13_39_35_700_ru.png?raw=true)
