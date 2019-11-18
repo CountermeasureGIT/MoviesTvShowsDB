@@ -28,8 +28,8 @@ class ActorsAdapter :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(cast: Cast) {
             itemView.apply {
-                tv_actor.text = cast.name
                 tv_role.text = cast.character
+                tv_actor.text = cast.name
 
                 Glide.with(iv_photo.context)
                     .load(cast.getProfilePathUrl())
